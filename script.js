@@ -1,0 +1,9 @@
+function toggleMenu(){document.getElementById('mainNav').classList.toggle('open')}
+function getCompleted(){return JSON.parse(localStorage.getItem('excelCompleted')||'[]')}
+function completeLesson(n){let a=getCompleted();if(!a.includes(n)){a.push(n);localStorage.setItem('excelCompleted',JSON.stringify(a))}document.getElementById('lessonStatus').textContent=' Completed!';updateProgress()}
+function updateProgress(){let a=getCompleted(),bar=document.getElementById('progressBar'),text=document.getElementById('progressText');if(bar)bar.style.width=(a.length/50*100)+'%';if(text)text.textContent=a.length+' / 50 completed';document.querySelectorAll('.lesson-card').forEach((c,i)=>{let n=i+1;if(a.includes(n)){c.style.borderColor='#16784a';let b=c.querySelector('.btn');if(b)b.textContent='✓ Completed'}})}
+function showLevel(level){document.querySelectorAll('.lesson-card').forEach(c=>c.style.display=level==='all'||c.dataset.level===level?'grid':'none')}
+function filterLessons(){let q=document.getElementById('lessonSearch').value.toLowerCase();document.querySelectorAll('.lesson-card').forEach(c=>c.style.display=c.dataset.title.includes(q)?'grid':'none')}
+function filterFormulas(){let q=document.getElementById('formulaSearch').value.toLowerCase();document.querySelectorAll('.formula').forEach(c=>c.style.display=c.textContent.toLowerCase().includes(q)?'block':'none')}
+function answer(btn,correct){let buttons=btn.parentElement.querySelectorAll('button');buttons.forEach(b=>b.disabled=true);if(btn.textContent.trim()===correct){btn.textContent+=' ✓ Correct!';btn.style.borderColor='#16784a'}else{btn.textContent+=' ✗ Try again';btn.style.borderColor='#c44'}}
+document.addEventListener('DOMContentLoaded',updateProgress);
